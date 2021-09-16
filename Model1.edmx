@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="firstgradeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ssn" Type="varchar" MaxLength="10" />
+          <Property Name="hire" Type="datetime" />
+          <Property Name="pay" Type="float" />
+          <Property Name="personID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fn" Type="varchar" MaxLength="10" />
+          <Property Name="mn" Type="varchar" MaxLength="10" />
+          <Property Name="ln" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_employee_person">
+          <End Role="person" Type="Self.person" Multiplicity="1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="personID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="firstgradeModelStoreContainer">
+          <EntitySet Name="employee" EntityType="Self.employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="person" EntityType="Self.person" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_employee_person" Association="Self.FK_employee_person">
+            <End Role="person" EntitySet="person" />
+            <End Role="employee" EntitySet="employee" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="firstgradeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ssn" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="hire" Type="DateTime" Precision="3" />
+          <Property Name="pay" Type="Double" />
+          <Property Name="personID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="person" Relationship="Self.FK_employee_person" FromRole="employee" ToRole="person" />
+        </EntityType>
+        <EntityType Name="person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fn" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="mn" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ln" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="employees" Relationship="Self.FK_employee_person" FromRole="person" ToRole="employee" />
+        </EntityType>
+        <Association Name="FK_employee_person">
+          <End Role="person" Type="Self.person" Multiplicity="1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="personID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="firstgradeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="employees" EntityType="Self.employee" />
+          <EntitySet Name="people" EntityType="Self.person" />
+          <AssociationSet Name="FK_employee_person" Association="Self.FK_employee_person">
+            <End Role="person" EntitySet="people" />
+            <End Role="employee" EntitySet="employees" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="firstgradeModelStoreContainer" CdmEntityContainer="firstgradeEntities">
+          <EntitySetMapping Name="employees">
+            <EntityTypeMapping TypeName="firstgradeModel.employee">
+              <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ssn" ColumnName="ssn" />
+                <ScalarProperty Name="hire" ColumnName="hire" />
+                <ScalarProperty Name="pay" ColumnName="pay" />
+                <ScalarProperty Name="personID" ColumnName="personID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="people">
+            <EntityTypeMapping TypeName="firstgradeModel.person">
+              <MappingFragment StoreEntitySet="person">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="fn" ColumnName="fn" />
+                <ScalarProperty Name="mn" ColumnName="mn" />
+                <ScalarProperty Name="ln" ColumnName="ln" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
